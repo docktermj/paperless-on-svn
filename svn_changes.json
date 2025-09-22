@@ -1,0 +1,18 @@
+{
+    "inputPath": "~/svn",
+    "outputPath": "~/svn_diff",
+    "svnPaths": [
+        {
+            "path": "data.dockter.com/dockter",
+            "revision": 0
+        },
+        {
+            "path": "data.dockter.com/michael",
+            "revision": 0
+        },
+        {
+            "path": "data.dockter.com/scan-files",
+            "revision": 0
+        }
+    ]
+}
