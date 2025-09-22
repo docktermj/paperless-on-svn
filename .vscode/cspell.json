@@ -1,0 +1,21 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "DBHOST",
+    "pgdata",
+    "redisdata",
+    "senzing"
+  ],
+  "ignorePaths": [
+    ".dockerignore",
+    ".git/*",
+    ".git/**",
+    ".github/linters/.golangci.yaml",
+    ".gitignore",
+    ".history/*",
+    ".project",
+    "Makefile",
+    "testdata/**"
+  ]
+}
