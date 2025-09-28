@@ -42,9 +42,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     config_path = os.path.expanduser(args.config)
 
-    print(config_path)
-    sys.exit(0)
-
     # Read configuration file.
 
     with open(config_path, "r") as file:
