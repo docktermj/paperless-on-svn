@@ -1,9 +1,8 @@
 {
-    "inputPath": "~/svn",
-    "outputPath": "~/svn_diff",
-    "svnPaths": [
+    "svnRepositories": [
         {
-            "path": "data.dockter.com/dockter",
+            "inputPath": "~/svn/data.dockter.com/dockter",
+            "outputPath": "~/svn_diff/data.dockter.com/dockter",
             "include": [
                 "*.htm",
                 "*.html",
@@ -26,7 +25,8 @@
             "revision": 0
         },
         {
-            "path": "data.dockter.com/scan-files",
+            "inputPath": "~/svn/data.dockter.com/scan-files",
+            "outputPath": "~/svn_diff/data.dockter.com/scan-files",
             "include": [
                 "*.htm",
                 "*.html",

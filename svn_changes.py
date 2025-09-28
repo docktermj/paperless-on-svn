@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 
+import argparse
 import fnmatch
 import json
 import os
@@ -28,42 +29,56 @@ def copy_file(input_path, output_path, source_path):
 
 if __name__ == "__main__":
 
+    # Parse commandline
+
+    parser = argparse.ArgumentParser(description="Copy Subversion revision changes.")
+    parser.add_argument(
+        "--config",
+        type=str,
+        default="~/.config/svn_changes.json",
+        help="Path to configuration file.",
+    )
+
+    args = parser.parse_args()
+    config_path = os.path.expanduser(args.config)
+
+    print(config_path)
+    sys.exit(0)
+
     # Read configuration file.
 
-    with open(CONFIG_PATH, "r") as file:
+    with open(config_path, "r") as file:
         config = json.load(file)
 
-    input_path = os.path.expanduser(config.get("inputPath"))
-    output_path = os.path.expanduser(config.get("outputPath"))
-    svn_paths = config.get("svnPaths")
+    svn_repositories = config.get("svnRepositories")
 
     # Process individual SVN repositories.
 
     errors = []
-    for svn_path in svn_paths:
+    for svn_repository in svn_repositories:
         files_copied = 0
         files_excluded = 0
 
         # Read configuration for a repository.
 
-        repository_path_fragment = svn_path.get("path")
-        previous_revision = svn_path.get("revision", 0)
-        exclude_list = svn_path.get("exclude", [])
-        include_list = svn_path.get("include", [])
-        repository_path = os.path.join(input_path, repository_path_fragment)
+        input_path = os.path.expanduser(svn_repository.get("inputPath"))
+        output_path = os.path.expanduser(svn_repository.get("outputPath"))
+        include_list = svn_repository.get("include", [])
+        exclude_list = svn_repository.get("exclude", [])
+        previous_revision = svn_repository.get("revision", 0)
 
         # Make globs to identify files to exclude.
 
         excludes = []
         for exclude in exclude_list:
-            excludes.append(f"{repository_path}/{exclude}")
+            excludes.append(f"{input_path}/{exclude}")
 
         # Query the repository for current revision.
 
-        repository = svn.local.LocalClient(repository_path)
+        repository = svn.local.LocalClient(input_path)
         info = repository.info()
         current_revision = info.get("entry_revision")
-        svn_path["revision"] = (
+        svn_repository["revision"] = (
             current_revision  # Update configuration for updating config file later.
         )
 
@@ -109,13 +124,13 @@ if __name__ == "__main__":
                         case "dir":
                             continue
                         case _:
-                            errors.append(f"Unknown kind: {svn_path}.{diff}.{kind}")
+                            errors.append(
+                                f"Unknown kind: {svn_repository}.{diff}.{kind}"
+                            )
                 case _:
-                    errors.append(f"Unknown item: {svn_path}.{diff}.{item}")
+                    errors.append(f"Unknown item: {svn_repository}.{diff}.{item}")
 
-        print(
-            f"From {repository_path}, {files_copied} copied;  {files_excluded} excluded."
-        )
+        print(f"From {input_path}, {files_copied} copied;  {files_excluded} excluded.")
 
     # If there were errors, exit early.
 
