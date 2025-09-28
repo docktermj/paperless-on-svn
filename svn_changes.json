@@ -1,0 +1,47 @@
+{
+    "svnRepositories": [
+        {
+            "inputPath": "~/svn/data.dockter.com/dockter",
+            "outputPath": "~/svn_diff/data.dockter.com/dockter",
+            "include": [
+                "*.htm",
+                "*.html",
+                "*.md",
+                "*.mht",
+                "*.pdf",
+                "*.rtf",
+                "*.sh",
+                "*.txt",
+                "*.xml"
+            ],
+            "exclude": [
+                "Audio",
+                "bin",
+                "FileCabinet/Financial/Quicken",
+                "Music",
+                "Pictures",
+                "Videos"
+            ],
+            "revision": 0
+        },
+        {
+            "inputPath": "~/svn/data.dockter.com/scan-files",
+            "outputPath": "~/svn_diff/data.dockter.com/scan-files",
+            "include": [
+                "*.htm",
+                "*.html",
+                "*.md",
+                "*.mht",
+                "*.pdf",
+                "*.rtf",
+                "*.sh",
+                "*.txt",
+                "*.xml"
+            ],
+            "exclude": [
+                "tools/*"
+            ],
+            "revision": 0
+        }
+    ]
+}

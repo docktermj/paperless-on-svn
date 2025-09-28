@@ -1,0 +1,25 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "DBHOST",
+    "dockter",
+    "docktermj",
+    "pgdata",
+    "redisdata",
+    "senzing",
+    "SUBDIRS",
+    "USERMAP"
+  ],
+  "ignorePaths": [
+    ".dockerignore",
+    ".git/*",
+    ".git/**",
+    ".github/linters/.golangci.yaml",
+    ".gitignore",
+    ".history/*",
+    ".project",
+    "Makefile",
+    "testdata/**"
+  ]
+}
