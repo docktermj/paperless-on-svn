@@ -4,14 +4,21 @@
     "svnPaths": [
         {
             "path": "data.dockter.com/dockter",
-            "revision": 0
-        },
-        {
-            "path": "data.dockter.com/michael",
+            "exclude": [
+                "Audio",
+                "bin",
+                "FileCabinet/Financial/Quicken",
+                "Music",
+                "Pictures",
+                "Videos"
+            ],
             "revision": 0
         },
         {
             "path": "data.dockter.com/scan-files",
+            "exclude": [
+                "tools/*"
+            ],
             "revision": 0
         }
     ]

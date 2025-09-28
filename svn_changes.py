@@ -1,8 +1,10 @@
 #! /usr/bin/env python3
 
+import fnmatch
 import json
 import os
 import shutil
+import sys
 
 import svn.local
 
@@ -37,14 +39,23 @@ if __name__ == "__main__":
 
     # Process individual SVN repositories.
 
-    errors = 0
+    errors = []
     for svn_path in svn_paths:
+        files_copied = 0
+        files_excluded = 0
 
         # Read configuration for a repository.
 
-        path = svn_path.get("path")
-        previous_revision = svn_path.get("revision")
-        repository_path = os.path.join(input_path, path)
+        repository_path_fragment = svn_path.get("path")
+        previous_revision = svn_path.get("revision", 0)
+        exclude_fragments = svn_path.get("exclude", [])
+        repository_path = os.path.join(input_path, repository_path_fragment)
+
+        # Make globs to identify files to exclude.
+
+        excludes = []
+        for exclude_fragment in exclude_fragments:
+            excludes.append(f"{repository_path}/{exclude_fragment}")
 
         # Query the repository for current revision.
 
@@ -65,22 +76,43 @@ if __name__ == "__main__":
             item = diff.get("item")
             kind = diff.get("kind")
             path = diff.get("path")
+
+            # Determine if file should be excluded from copying.
+
+            is_excluded = False
+            for exclude in excludes:
+                if fnmatch.fnmatch(path, exclude):
+                    is_excluded = True
+            if is_excluded:
+                files_excluded += 1
+                continue
+
+            # If path was not excluded and is a file, copy it.
+
             match item:
                 case "added":
                     match kind:
                         case "file":
+                            files_copied += 1
                             copy_file(input_path, output_path, path)
                         case "dir":
                             continue
                         case _:
-                            errors += 1
-                            print(f"Unknown kind: {kind}")
+                            errors.append(f"Unknown kind: {svn_path}.{diff}.{kind}")
                 case _:
-                    errors += 1
-                    print(f"Unknown item: {item}")
+                    errors.append(f"Unknown item: {svn_path}.{diff}.{item}")
+
+        print(
+            f"From {repository_path}, {files_copied} copied;  {files_excluded} excluded."
+        )
+
+    # If there were errors, exit early.
+
+    if len(errors) > 0:
+        print("There were errors: {errors}")
+        sys.exit(1)
 
     # Write configuration file with updated revisions.
 
-    if errors == 0:
-        with open(CONFIG_PATH, "w") as file:
-            json.dump(config, file, indent=4)
+    with open(CONFIG_PATH, "w") as file:
+        json.dump(config, file, indent=4)
