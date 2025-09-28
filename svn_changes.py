@@ -29,7 +29,7 @@ def copy_file(input_path, output_path, source_path):
 
 if __name__ == "__main__":
 
-    # Parse commandline
+    # Parse commandline options.
 
     parser = argparse.ArgumentParser(description="Copy Subversion revision changes.")
     parser.add_argument(
