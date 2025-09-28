@@ -48,14 +48,15 @@ if __name__ == "__main__":
 
         repository_path_fragment = svn_path.get("path")
         previous_revision = svn_path.get("revision", 0)
-        exclude_fragments = svn_path.get("exclude", [])
+        exclude_list = svn_path.get("exclude", [])
+        include_list = svn_path.get("include", [])
         repository_path = os.path.join(input_path, repository_path_fragment)
 
         # Make globs to identify files to exclude.
 
         excludes = []
-        for exclude_fragment in exclude_fragments:
-            excludes.append(f"{repository_path}/{exclude_fragment}")
+        for exclude in exclude_list:
+            excludes.append(f"{repository_path}/{exclude}")
 
         # Query the repository for current revision.
 
@@ -76,6 +77,16 @@ if __name__ == "__main__":
             item = diff.get("item")
             kind = diff.get("kind")
             path = diff.get("path")
+
+            # Determine if file should be included.
+
+            is_included = False
+            for include in include_list:
+                if fnmatch.fnmatch(path.lower(), include.lower()):
+                    is_included = True
+            if not is_included:
+                files_excluded += 1
+                continue
 
             # Determine if file should be excluded from copying.
 
@@ -109,7 +120,8 @@ if __name__ == "__main__":
     # If there were errors, exit early.
 
     if len(errors) > 0:
-        print("There were errors: {errors}")
+        for error in errors:
+            print("Error: {error}")
         sys.exit(1)
 
     # Write configuration file with updated revisions.

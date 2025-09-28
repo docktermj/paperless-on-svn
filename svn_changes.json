@@ -4,6 +4,17 @@
     "svnPaths": [
         {
             "path": "data.dockter.com/dockter",
+            "include": [
+                "*.htm",
+                "*.html",
+                "*.md",
+                "*.mht",
+                "*.pdf",
+                "*.rtf",
+                "*.sh",
+                "*.txt",
+                "*.xml"
+            ],
             "exclude": [
                 "Audio",
                 "bin",
@@ -16,6 +27,17 @@
         },
         {
             "path": "data.dockter.com/scan-files",
+            "include": [
+                "*.htm",
+                "*.html",
+                "*.md",
+                "*.mht",
+                "*.pdf",
+                "*.rtf",
+                "*.sh",
+                "*.txt",
+                "*.xml"
+            ],
             "exclude": [
                 "tools/*"
             ],
