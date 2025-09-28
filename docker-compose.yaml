@@ -24,8 +24,8 @@ services:
     volumes:
       - data:/usr/src/paperless/data
       - media:/usr/src/paperless/media
-      - ./export:/usr/src/paperless/export
-      - /home/senzing/svn:/usr/src/paperless/consume
+      - $HOME/paperless/export:/usr/src/paperless/export
+      - $HOME/svn_diff:/usr/src/paperless/consume
     env_file: docker-compose.env
     environment:
       PAPERLESS_REDIS: redis://broker:6379

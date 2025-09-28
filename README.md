@@ -55,5 +55,15 @@ Copy files from a Subversion directory that have been modified since a Subversio
         0 7 * * * /home/dockter/github.com/docktermj/paperless-on-svn/.venv/bin/python /home/dockter/github.com/docktermj/paperless-on-svn/svn_changes.py --config /home/dockter/.config/svn_changes.json
         ```
 
+1. Running `paperless-ngx` docker-compose formation.
+
+    ```console
+    docker compose --file /home/dockter/github.com/docktermj/paperless-on-svn/docker-compose.yaml up --detach
+    ```
+
+    1. References:
+        1. [Use Docker Compose]
+
 [svn_changes.json]: svn_changes.json
 [svn_changes.py]: svn_changes.py
+[Use Docker Compose]: https://docs.paperless-ngx.com/setup/#docker
